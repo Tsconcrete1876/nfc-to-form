@@ -7,6 +7,7 @@
 <body>
   <h2>請掃描 NFC 標籤...</h2>
   <p id="status">等待中...</p>
+
   <!-- <button onclick="readNFC()">開始掃描 NFC</button> -->
 
   <script>
@@ -21,15 +22,12 @@
             const record = event.message.records[0];
             console.log("NFC 內容:", record);
 
-            // 嘗試手動轉換字節數組為字串
             const uint8Array = new Uint8Array(record.data);
             const id = String.fromCharCode.apply(null, uint8Array);
             console.log("解析出的 NFC ID:", id);
 
-            // 顯示讀取的 ID
             document.getElementById("status").textContent = "讀取成功，跳轉中...";
-            
-            // 替換為你的 Google 表單連結 + entry ID
+
             const formUrl = "https://docs.google.com/forms/d/e/iXm2c9xB2kfW16uXA/formResponse?entry.680740836=" + encodeURIComponent(id);
             window.location.href = formUrl;
           };
@@ -40,6 +38,9 @@
         document.getElementById("status").textContent = "這台裝置不支援 Web NFC。請使用 Android Chrome。";
       }
     }
+
+    // 頁面載入後自動執行
+    window.addEventListener("DOMContentLoaded", readNFC);
   </script>
 </body>
 </html>
