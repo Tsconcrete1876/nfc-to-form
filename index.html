@@ -17,11 +17,10 @@
           await ndef.scan();
           document.getElementById("status").textContent = "請靠近 NFC 標籤...";
           ndef.onreading = event => {
+            console.log(event); // 查看事件內容
             const record = event.message.records[0];
             const textDecoder = new TextDecoder(record.encoding || "utf-8");
             const id = textDecoder.decode(record.data);
-
-             // 顯示讀取的 ID
             console.log("NFC ID:", id);
 
             // 替換為你的 Google 表單連結 + entry ID
