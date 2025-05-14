@@ -21,6 +21,9 @@
             const textDecoder = new TextDecoder(record.encoding || "utf-8");
             const id = textDecoder.decode(record.data);
 
+             // 顯示讀取的 ID
+            console.log("NFC ID:", id);
+
             // 替換為你的 Google 表單連結 + entry ID
             const formUrl = "https://docs.google.com/forms/d/e/iXm2c9xB2kfW16uXA/formResponse?entry.680740836=" + encodeURIComponent(id);
 
