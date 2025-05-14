@@ -17,16 +17,20 @@
           await ndef.scan();
           document.getElementById("status").textContent = "請靠近 NFC 標籤...";
           ndef.onreading = event => {
-            console.log(event); // 查看事件內容
+            console.log("NFC 標籤讀取成功:", event);
             const record = event.message.records[0];
-            const textDecoder = new TextDecoder(record.encoding || "utf-8");
-            const id = textDecoder.decode(record.data);
-            console.log("NFC ID:", id);
+            console.log("NFC 內容:", record);
 
+            // 嘗試手動轉換字節數組為字串
+            const uint8Array = new Uint8Array(record.data);
+            const id = String.fromCharCode.apply(null, uint8Array);
+            console.log("解析出的 NFC ID:", id);
+
+            // 顯示讀取的 ID
+            document.getElementById("status").textContent = "讀取成功，跳轉中...";
+            
             // 替換為你的 Google 表單連結 + entry ID
             const formUrl = "https://docs.google.com/forms/d/e/iXm2c9xB2kfW16uXA/formResponse?entry.680740836=" + encodeURIComponent(id);
-
-            document.getElementById("status").textContent = "讀取成功，跳轉中...";
             window.location.href = formUrl;
           };
         } catch (error) {
