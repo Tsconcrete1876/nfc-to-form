@@ -3,6 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>NFC to Google Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 1.5em;
+      padding: 40px 20px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      font-size: 2em;
+      margin-bottom: 1em;
+    }
+    p#status {
+      font-size: 1.3em;
+      margin-bottom: 2em;
+      color: #333;
+    }
+    button {
+      font-size: 1.5em;
+      padding: 0.5em 1.5em;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
 </head>
 <body>
   <h2>請掃描 NFC 標籤...</h2>
@@ -17,23 +44,13 @@
           await ndef.scan();
           document.getElementById("status").textContent = "請靠近 NFC 標籤...";
           ndef.onreading = event => {
-            console.log("NFC 標籤讀取成功:", event);
             const record = event.message.records[0];
-            console.log("NFC 內容:", record);
-
-            // 嘗試手動轉換字節數組為字串
             const uint8Array = new Uint8Array(record.data);
             const id = String.fromCharCode.apply(null, uint8Array);
-            console.log("解析出的 NFC ID:", id);
-            alert("顯示");
-            alert(record.data + "\n" + encodeURIComponent(record.data));
+            alert("NFC ID:\n" + id + "\n" + encodeURIComponent(id));
 
-            // 顯示讀取的 ID
             document.getElementById("status").textContent = "讀取成功，跳轉中...";
-            
-            // 替換為你的 Google 表單連結 + entry ID
             const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdKsWLR_cKG67z7wAmF80Igz9muqyX6F8JHqB_E6JAwG4C6PQ/formResponse?entry.2015421160=" + encodeURIComponent(id);
-                             
             window.location.href = formUrl;
           };
         } catch (error) {
